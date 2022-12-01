@@ -12,21 +12,18 @@ pub fn parse_input(filename: &str) -> Result<Vec<u32>, ProblemError> {
     let mut weight_per_elf = vec![0];
 
     for line in reader.lines().into_iter() {
-        match line {
-            Ok(line) => {
-                if line.chars().all(|c| c.is_ascii_whitespace()) {
-                    weight_per_elf.push(0);
-                } else {
-                    let item_weight = u32::from_str_radix(&line, 10)?;
-                    let current_weight = weight_per_elf
-                        .last_mut()
-                        .ok_or("No collected weights. This should not happen.")?;
-                    *current_weight = *current_weight + item_weight;
-                }
-            }
-            Err(_) => continue,
+        let line_str = line?;
+        if line_str.chars().all(|c| c.is_ascii_whitespace()) {
+            weight_per_elf.push(0);
+        } else {
+            let item_weight = u32::from_str_radix(&line_str, 10)?;
+            let current_weight = weight_per_elf
+                .last_mut()
+                .ok_or("No collected weights. This should not happen.")?;
+            *current_weight = *current_weight + item_weight;
         }
     }
+
     Ok(weight_per_elf)
 }
 
@@ -34,15 +31,15 @@ pub fn get_max_weight(weight_per_elf: &Vec<u32>) -> Option<u32> {
     weight_per_elf.iter().max().copied()
 }
 
-pub fn get_top_three_weights(weight_per_elf: &Vec<u32>) -> u32 {
+pub fn get_top_three_weights(weight_per_elf: &Vec<u32>) -> Option<u32> {
     let mut max_heap = BinaryHeap::new();
     weight_per_elf.iter().for_each(|&w| max_heap.push(w));
 
     let mut sum = 0;
     for _ in 0..3 {
-        sum = sum + max_heap.pop().unwrap_or_default();
+        sum = sum + max_heap.pop()?;
     }
-    sum
+    Some(sum)
     // With experimental:
     // max_heap.into_iter_sorted().take(3).sum()
 }
@@ -61,6 +58,12 @@ mod tests {
     #[test]
     fn test_part2() {
         let mini_input = parse_input("input/2022/day1_mini.txt").expect("");
-        assert_eq!(get_top_three_weights(&mini_input), 45000);
+        assert_eq!(get_top_three_weights(&mini_input), Some(45000));
+    }
+    
+    #[test]
+    fn test_top_three_with_less_than_three_values() {
+        let not_enough_values = Vec::from([1, 2]) ;
+        assert_eq!(get_top_three_weights(&not_enough_values), None);
     }
 }
