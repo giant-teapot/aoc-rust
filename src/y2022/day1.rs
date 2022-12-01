@@ -2,11 +2,12 @@ use std::{
     collections::BinaryHeap,
     fs::File,
     io::{BufRead, BufReader},
-    ops::Add,
 };
 
-pub fn parse_input(filename: &str) -> Vec<u32> {
-    let input_file = File::open(filename).expect("");
+use aoc_rust::utils::ProblemError;
+
+pub fn parse_input(filename: &str) -> Result<Vec<u32>, ProblemError> {
+    let input_file = File::open(filename)?;
     let reader = BufReader::new(input_file);
     let mut weight_per_elf = vec![0];
 
@@ -16,15 +17,17 @@ pub fn parse_input(filename: &str) -> Vec<u32> {
                 if line.chars().all(|c| c.is_ascii_whitespace()) {
                     weight_per_elf.push(0);
                 } else {
-                    let item_weight = u32::from_str_radix(&line, 10).expect("");
-                    let current_weight = weight_per_elf.last_mut().expect("");
-                    *current_weight = current_weight.add(item_weight);
+                    let item_weight = u32::from_str_radix(&line, 10)?;
+                    let current_weight = weight_per_elf
+                        .last_mut()
+                        .ok_or("No collected weights. This should not happen.")?;
+                    *current_weight = *current_weight + item_weight;
                 }
             }
             Err(_) => continue,
         }
     }
-    weight_per_elf
+    Ok(weight_per_elf)
 }
 
 pub fn get_max_weight(weight_per_elf: &Vec<u32>) -> Option<u32> {
@@ -51,13 +54,13 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let mini_input = parse_input("input/2022/day1_mini.txt");
+        let mini_input = parse_input("input/2022/day1_mini.txt").expect("");
         assert_eq!(get_max_weight(&mini_input), Some(24000));
     }
 
     #[test]
     fn test_part2() {
-        let mini_input = parse_input("input/2022/day1_mini.txt");
+        let mini_input = parse_input("input/2022/day1_mini.txt").expect("");
         assert_eq!(get_top_three_weights(&mini_input), 45000);
     }
 }
