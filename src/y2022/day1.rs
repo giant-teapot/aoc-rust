@@ -1,5 +1,4 @@
 use std::{
-    collections::BinaryHeap,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -32,16 +31,21 @@ pub fn get_max_weight(weight_per_elf: &Vec<u32>) -> Option<u32> {
 }
 
 pub fn get_top_three_weights(weight_per_elf: &Vec<u32>) -> Option<u32> {
-    let mut max_heap = BinaryHeap::new();
-    weight_per_elf.iter().for_each(|&w| max_heap.push(w));
-
-    let mut sum = 0;
-    for _ in 0..3 {
-        sum = sum + max_heap.pop()?;
+    if weight_per_elf.len() < 3 {
+        return None;
     }
-    Some(sum)
-    // With experimental:
-    // max_heap.into_iter_sorted().take(3).sum()
+
+    let mut top_three = [0 as u32; 3];
+    top_three.copy_from_slice(&weight_per_elf[0..3]);
+    top_three.sort();
+
+    for &weight in weight_per_elf.iter().skip(3) {
+        if weight > top_three[0] {
+            top_three[0] = weight;
+            top_three.sort();
+        }
+    }
+    Some(top_three.iter().sum())
 }
 
 #[cfg(test)]
