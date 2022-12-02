@@ -60,10 +60,10 @@ mod tests {
         let mini_input = parse_input("input/2022/day1_mini.txt").expect("");
         assert_eq!(get_top_three_weights(&mini_input), Some(45000));
     }
-    
+
     #[test]
     fn test_top_three_with_less_than_three_values() {
-        let not_enough_values = Vec::from([1, 2]) ;
+        let not_enough_values = Vec::from([1, 2]);
         assert_eq!(get_top_three_weights(&not_enough_values), None);
     }
 }

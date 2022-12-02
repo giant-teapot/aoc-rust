@@ -17,6 +17,12 @@ fn main() -> Result<(), ProblemError> {
         y2022::day1::get_top_three_weights(&input).ok_or("Not enough values in the input")?
     );
     // ------------------------------------------------------------------------
+    println!("> Day 2");
+    let input = y2022::day2::parse_input_part1("input/2022/day2.txt")?;
+    println!("- part 1: {}", y2022::day2::get_total_score_part1(&input));
+    let input = y2022::day2::parse_input_part2("input/2022/day2.txt")?;
+    println!("- part 2: {}", y2022::day2::get_total_score_part2(&input));
+    // ------------------------------------------------------------------------
 
     Ok(())
 }
