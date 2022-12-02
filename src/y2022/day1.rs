@@ -10,32 +10,32 @@ pub fn parse_input(filename: &str) -> Result<Vec<u32>, ProblemError> {
     let reader = BufReader::new(input_file);
     let mut weight_per_elf = vec![0];
 
-    for line in reader.lines().into_iter() {
+    for line in reader.lines() {
         let line_str = line?;
         if line_str.chars().all(|c| c.is_ascii_whitespace()) {
             weight_per_elf.push(0);
         } else {
-            let item_weight = u32::from_str_radix(&line_str, 10)?;
+            let item_weight = line_str.parse::<u32>()?;
             let current_weight = weight_per_elf
                 .last_mut()
                 .ok_or("No collected weights. This should not happen.")?;
-            *current_weight = *current_weight + item_weight;
+            *current_weight += item_weight;
         }
     }
 
     Ok(weight_per_elf)
 }
 
-pub fn get_max_weight(weight_per_elf: &Vec<u32>) -> Option<u32> {
+pub fn get_max_weight(weight_per_elf: &[u32]) -> Option<u32> {
     weight_per_elf.iter().max().copied()
 }
 
-pub fn get_top_three_weights(weight_per_elf: &Vec<u32>) -> Option<u32> {
+pub fn get_top_three_weights(weight_per_elf: &[u32]) -> Option<u32> {
     if weight_per_elf.len() < 3 {
         return None;
     }
 
-    let mut top_three = [0 as u32; 3];
+    let mut top_three = [0_u32; 3];
     top_three.copy_from_slice(&weight_per_elf[0..3]);
     top_three.sort();
 

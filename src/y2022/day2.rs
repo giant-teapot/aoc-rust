@@ -72,7 +72,7 @@ impl Move {
 }
 
 pub fn parse_input_part1(filename: &str) -> Result<Vec<(Move, Move)>, ProblemError> {
-    let file = File::open(&filename)?;
+    let file = File::open(filename)?;
     let reader = BufReader::new(file);
 
     let moves = reader
@@ -111,7 +111,7 @@ fn get_move_score(player_move: &Move) -> u32 {
     }
 }
 
-pub fn get_total_score_part1(games: &Vec<(Move, Move)>) -> u32 {
+pub fn get_total_score_part1(games: &[(Move, Move)]) -> u32 {
     games
         .iter()
         .map(|(adversary_move, player_move)| {
@@ -122,7 +122,7 @@ pub fn get_total_score_part1(games: &Vec<(Move, Move)>) -> u32 {
 }
 
 pub fn parse_input_part2(filename: &str) -> Result<Vec<(Move, MatchOutcome)>, ProblemError> {
-    let file = File::open(&filename)?;
+    let file = File::open(filename)?;
     let reader = BufReader::new(file);
 
     let moves = reader
@@ -153,11 +153,11 @@ fn required_move_for_outcome(adversary: &Move, target_outcome: &MatchOutcome) ->
         (Move::Cissors, MatchOutcome::Loss) => Move::Paper,
         (Move::Cissors, MatchOutcome::Win) => Move::Rock,
 
-        (x, MatchOutcome::Draw) => x.clone(),
+        (x, MatchOutcome::Draw) => *x,
     }
 }
 
-pub fn get_total_score_part2(games: &Vec<(Move, MatchOutcome)>) -> u32 {
+pub fn get_total_score_part2(games: &[(Move, MatchOutcome)]) -> u32 {
     games
         .iter()
         .map(|(adversary_move, outcome)| {
