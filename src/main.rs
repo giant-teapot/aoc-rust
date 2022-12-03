@@ -23,6 +23,11 @@ fn main() -> Result<(), ProblemError> {
     let input = y2022::day2::parse_input_part2("input/2022/day2.txt")?;
     println!("- part 2: {}", y2022::day2::get_total_score_part2(&input));
     // ------------------------------------------------------------------------
+    println!("> Day 3");
+    let input = y2022::day3::parse_input("input/2022/day3.txt")?;
+    println!("- part 1: {}", y2022::day3::solve_part_1(&input));
+    println!("- part 2: {}", y2022::day3::solve_part_2(&input));
+    // ------------------------------------------------------------------------
 
     Ok(())
 }
