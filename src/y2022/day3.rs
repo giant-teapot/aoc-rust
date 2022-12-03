@@ -8,7 +8,7 @@ use aoc_rust::utils::ProblemError;
 use itertools::Itertools;
 
 pub fn parse_input(filename: &str) -> Result<Vec<Vec<u32>>, ProblemError> {
-    let file = File::open(&filename)?;
+    let file = File::open(filename)?;
     let reader = BufReader::new(file);
 
     let bags: Vec<_> = reader
@@ -37,7 +37,7 @@ fn item_score(c: char) -> Option<u32> {
     }
 }
 
-pub fn solve_part_1(bags: &Vec<Vec<u32>>) -> u32 {
+pub fn solve_part_1(bags: &[Vec<u32>]) -> u32 {
     bags.iter()
         .filter_map(|items| {
             let (p1, p2) = items.split_at(items.len() / 2);
@@ -49,7 +49,7 @@ pub fn solve_part_1(bags: &Vec<Vec<u32>>) -> u32 {
         .sum()
 }
 
-pub fn solve_part_2(bags: &Vec<Vec<u32>>) -> u32 {
+pub fn solve_part_2(bags: &[Vec<u32>]) -> u32 {
     bags.iter()
         .tuples()
         .filter_map(|(x, y, z)| {
