@@ -28,6 +28,10 @@ fn main() -> Result<(), ProblemError> {
     println!("- part 1: {}", y2022::day3::solve_part_1(&input));
     println!("- part 2: {}", y2022::day3::solve_part_2(&input));
     // ------------------------------------------------------------------------
+    println!("> Day 4");
+    let input = y2022::day4::parse_input("input/2022/day4.txt")?;
+    println!("- part 1: {}", y2022::day4::solve_part_1(&input));
+    println!("- part 2: {}", y2022::day4::solve_part_2(&input));
 
     Ok(())
 }
