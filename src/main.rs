@@ -38,6 +38,19 @@ fn main() -> Result<(), ProblemError> {
     println!("- part 1: {}", y2022::day5::solve_part_1(input));
     let input = y2022::day5::parse_input("input/2022/day5.txt")?;
     println!("- part 2: {}", y2022::day5::solve_part_2(input));
+    // ------------------------------------------------------------------------
+    println!("> Day 6");
+    let input = y2022::day6::parse_input("input/2022/day6.txt")?;
+    println!(
+        "- part 1: {}",
+        y2022::day6::solve_part_1(&input)
+            .ok_or_else(|| ProblemError::CustomError("No solution found.".to_string()))?
+    );
+    println!(
+        "- part 1: {}",
+        y2022::day6::solve_part_2(&input)
+            .ok_or_else(|| ProblemError::CustomError("No solution found.".to_string()))?
+    );
 
     Ok(())
 }
